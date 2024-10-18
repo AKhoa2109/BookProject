@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.text.html.ListView;
 
 import beans.BookBean;
+import beans.Cart;
 import beans.ListItem;
 
 /**
@@ -48,24 +49,23 @@ public class UpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		/* doGet(request, response); */
-		Double sum = 0.0;
-		String id = request.getParameter("productID");
-		String moTa = request.getParameter("productDescription");
-		String gia = request.getParameter("productPrice");
-		String soLuong = request.getParameter("productQuantity");
-		
-		
-		Double giaTien = Double.parseDouble(gia);
-		
-		Integer sl = Integer.parseInt(soLuong);
-		
-		 
-		BookBean product = new BookBean(id,moTa, giaTien);
-		
-		ListItem listView = new ListItem(product,sl);
-		
-		
-		
+		String id = request.getParameter("id");
+		String quantity = request.getParameter("productQuantity");
+		int sl = Integer.parseInt(quantity);
+		HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        
+        if (cart == null) {
+            cart = new Cart();
+            
+        }
+        
+        BookBean bookBean = new BookBean();
+        bookBean.getProductInfo(id);
+        
+        ListItem lineItem = new ListItem(bookBean,sl);
+		cart.updateItem(lineItem);
+		session.setAttribute("cart", cart);
 		
 		String url = "/giohang.jsp";
 		getServletContext().getRequestDispatcher(url).forward(request, response);

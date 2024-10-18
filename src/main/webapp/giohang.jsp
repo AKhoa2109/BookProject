@@ -26,15 +26,15 @@
       		<c:forEach var="item" items="${cart.items}">
                     <tr>
                         <td>
-                            <form action="" method="post">
-                            	<input type="hidden" name="productID" value="<c:out value='${item.product.description}'></c:out>"/>
-                                <input type="text" name="productQuantity" value="<c:out value='${item.quantity}'></c:out>">
+                            <form action="?action=update" method="post">
+                            	<input type="hidden"  name="productCode" value="${item.product.code}">
+                                <input type="text" name="productQuantity" value="${item.quantity}">
                                 <input type="submit" value="Update">
                             </form>
                         </td>
                         <td><c:out value='${item.product.description}'></c:out></td>
                         <td><c:out value='${item.product.price}'></c:out></td>
-                        <td></td>
+                        <td><c:out value='${tong}'></c:out></td>
                         <td>
                             <form action="?id=${item.product.code}&&quantity=0" method="post">
                                 <input type="hidden" name="product" value="${item.product.description}">

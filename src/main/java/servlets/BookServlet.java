@@ -74,7 +74,7 @@ public class BookServlet extends HttpServlet {
 		else if (action.equals("addToCart")) 
 		{
 			String id = request.getParameter("id");
-			System.out.println(id);
+
 			String quantity = request.getParameter("productQuantity");
 			
 			HttpSession session = request.getSession();
@@ -110,6 +110,24 @@ public class BookServlet extends HttpServlet {
 	        }
 	        session.setAttribute("cart", cart);
 	        url = "/giohang.jsp";
+		}
+		else if (action.equals("update"))
+		{
+			String id = request.getParameter("productCode");
+			System.out.print(id);
+			String quantity = request.getParameter("productQuantity");
+			int sl = Integer.parseInt(quantity);
+			HttpSession session = request.getSession();
+	        Cart cart = (Cart) session.getAttribute("cart");
+	        
+	        BookBean bookBean = new BookBean();
+	        bookBean.getProductInfo(id);
+	        
+	        ListItem lineItem = new ListItem(bookBean,sl);
+			cart.updateItem(lineItem);
+			session.setAttribute("cart", cart);
+			
+			url = "/giohang.jsp";
 		}
 
 		sc.getRequestDispatcher(url).forward(request, response);
