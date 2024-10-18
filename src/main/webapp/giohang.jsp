@@ -29,24 +29,31 @@
                             <form action="?action=update" method="post">
                             	<input type="hidden"  name="productCode" value="${item.product.code}">
                                 <input type="text" name="productQuantity" value="${item.quantity}">
+                                <input type="hidden" name="productTotal" value="${item.getTotal()}">
                                 <input type="submit" value="Update">
                             </form>
                         </td>
                         <td><c:out value='${item.product.description}'></c:out></td>
                         <td><c:out value='${item.product.price}'></c:out></td>
-                        <td><c:out value='${tong}'></c:out></td>
+                        <td>${item.getTotalPriceFormat()}</td>
                         <td>
-                            <form action="?id=${item.product.code}&&quantity=0" method="post">
+                            <form action="?id=${item.product.code}&&action=remove" method="post">
                                 <input type="hidden" name="product" value="${item.product.description}">
                                 <input type="submit" value="Remove Item">
                             </form>
                         </td>
                     </tr>
+                     
                 </c:forEach>
       	</c:if>
       		
       </tboday>
-      <tfoot></tfoot>
+      <tfoot>
+      	<tr>
+          	<td colspan="3">Tổng cộng:</td>
+          	<td>${tong}</td>
+       	</tr>
+      </tfoot>
     </table>
     <p><b>Để thay đổi số lượng</b></p>
     <p>nhập số lượng vào nhấn Update</p>

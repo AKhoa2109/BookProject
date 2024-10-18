@@ -1,5 +1,8 @@
 package beans;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+
+import org.eclipse.tags.shaded.org.apache.xalan.templates.DecimalFormatProperties;
 public class ListItem implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private BookBean product;
@@ -29,6 +32,23 @@ public class ListItem implements Serializable{
 		this.quantity = quantity;
 	}
 	
+	public Double getTotalPrice()
+	{
+		return quantity * product.getPrice();
+	}
+	
+	public String getTotalPriceFormat()
+	{
+		DecimalFormat formatter = new DecimalFormat("#,###");
+		return formatter.format(getTotalPrice()) + "đ";
+	}
+	
+	public Double getTotal()
+	{
+		double tong = 0.0;
+		tong += getTotalPrice();
+		return tong;
+	}
 	
 
 }

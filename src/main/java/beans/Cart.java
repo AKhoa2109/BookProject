@@ -69,21 +69,5 @@ public class Cart implements Serializable{
 		}
 	}
 	
-	public double tinhTongTien(ListItem item)
-	{
-		double tong=0;
-		String code = item.getProduct().getCode();
-		for(int i=0;i<items.size();i++)
-		{
-			ListItem lineItem = items.get(i);
-			if(lineItem.getProduct().getCode().equals(code))
-			{
-				int quantity =item.getQuantity();
-				tong = item.getProduct().getPrice()*quantity;
-			}
-		}
-		return tong;
-		
-	}
 	
 }

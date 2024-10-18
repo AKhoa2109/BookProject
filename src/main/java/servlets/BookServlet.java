@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.classfile.constantpool.DoubleEntry;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,8 +115,9 @@ public class BookServlet extends HttpServlet {
 		}
 		else if (action.equals("update"))
 		{
+			String tong;
+			Double total= 0.0;
 			String id = request.getParameter("productCode");
-			System.out.print(id);
 			String quantity = request.getParameter("productQuantity");
 			int sl = Integer.parseInt(quantity);
 			HttpSession session = request.getSession();
@@ -127,8 +130,39 @@ public class BookServlet extends HttpServlet {
 			cart.updateItem(lineItem);
 			session.setAttribute("cart", cart);
 			
+			
+			for(ListItem items:cart.getItems())
+			{
+				total += items.getTotalPrice();
+			}
+			
+			DecimalFormat formatter = new DecimalFormat("#,###");
+			tong =  formatter.format(total) + "đ";
+			
+			session.setAttribute("tong", tong);
+			
 			url = "/giohang.jsp";
 		}
+		else if(action.equals("remove")) 
+		{
+			
+			String id = request.getParameter("id");
+
+
+			int sl = 0;
+			HttpSession session = request.getSession();
+	        Cart cart = (Cart) session.getAttribute("cart");
+	        
+	        BookBean bookBean = new BookBean();
+	        bookBean.getProductInfo(id);
+	        
+	        ListItem lineItem = new ListItem(bookBean,sl);
+	        
+	        cart.removeItem(lineItem);
+	        session.setAttribute("cart", cart);
+	        url = "/giohang.jsp";
+		}
+		
 
 		sc.getRequestDispatcher(url).forward(request, response);
 		
